@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
+  "enclave-runner",
   "tokio",
   "tokio-macros",
   "tokio-test",
@@ -30,3 +31,11 @@ unexpected_cfgs = { level = "warn", check-cfg = [
   'cfg(tokio_taskdump)',
   'cfg(tokio_unstable)',
 ] }
+
+[patch.crates-io]
+async-usercalls = { git = "https://github.com/fortanix/rust-sgx.git", branch = "master" }
+enclave-runner = { git = "https://github.com/fortanix/rust-sgx", branch = "master" }
+mio = { git = "https://github.com/fortanix/mio", branch = "v0.8.10" }
+sgx-isa = { git = "https://github.com/fortanix/rust-sgx", branch = "master" }
+sgxs = { git = "https://github.com/fortanix/rust-sgx", branch = "master" }
+tokio = { path = "./tokio" }

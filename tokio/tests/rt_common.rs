@@ -1,7 +1,7 @@
 #![allow(unknown_lints, unexpected_cfgs)]
 #![allow(clippy::needless_range_loop)]
 #![warn(rust_2018_idioms)]
-#![cfg(feature = "full")]
+#![cfg(any(feature = "full", feature = "full-sgx"))]
 
 // Tests to run on both current-thread & multi-thread runtime variants.
 
@@ -998,7 +998,7 @@ rt_test! {
         drop(rt);
     }
 
-    #[cfg(not(target_os="wasi"))] // Wasi doesn't support UDP or bind()
+    #[cfg(not(any(target_os="wasi", target_env = "sgx")))] // Wasi doesn't support UDP or bind(), SGX doesn't support UDP
     #[test]
     fn io_notify_while_shutting_down() {
         use tokio::net::UdpSocket;
