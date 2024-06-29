@@ -1,8 +1,11 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+
+set -euo pipefail
+
 repo_root=$(readlink -f $(dirname ${BASH_SOURCE[0]}))
 cd ${repo_root}
 
-source ${repo_root}/ct_env.sh
+# source ${repo_root}/ct_env.sh
 
 cargo test
 
