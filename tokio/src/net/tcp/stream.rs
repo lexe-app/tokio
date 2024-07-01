@@ -257,7 +257,6 @@ impl TcpStream {
     /// [`tokio::net::TcpStream`]: TcpStream
     /// [`std::net::TcpStream`]: std::net::TcpStream
     /// [`set_nonblocking`]: fn@std::net::TcpStream::set_nonblocking
-    #[cfg(not(target_env = "sgx"))] // `TcpStream::into_raw_fd()` not support by `mio` for SGX platform
     pub fn into_std(self) -> io::Result<std::net::TcpStream> {
         #[cfg(unix)]
         {
@@ -284,6 +283,11 @@ impl TcpStream {
                 .into_inner()
                 .map(|io| io.into_raw_fd())
                 .map(|raw_fd| unsafe { std::net::TcpStream::from_raw_fd(raw_fd) })
+        }
+
+        #[cfg(target_env = "sgx")]
+        {
+            self.io.into_inner().and_then(|io| io.try_into_std())
         }
     }
 
